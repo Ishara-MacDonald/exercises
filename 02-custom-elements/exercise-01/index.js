@@ -16,12 +16,8 @@ class LightBulb extends HTMLElement {
   switchLight(state) {
     const lightBulb = this.querySelector('.light-bulb');
 
-    if (state) {
-      lightBulb.classList.add('light-bulb--on');
-    }
-    else {
-      lightBulb.classList.remove('light-bulb--on');
-    }
+    if (state) { lightBulb.classList.add('light-bulb--on'); }
+    else { lightBulb.classList.remove('light-bulb--on'); }
   }
 }
 
