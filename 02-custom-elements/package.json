@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "Schrijf een eerste bruikbare Web Component, genaamd <light-bulb>. Het component moet de volgende\r HTML bevatten:",
   "main": "index.js",
-  "dependencies": {},
+  "dependencies": {
+    "@polymer/paper-checkbox": "^3.1.0",
+    "@polymer/paper-dropdown-menu": "^3.1.0"
+  },
   "devDependencies": {
     "es-dev-server": "^1.57.4"
   },

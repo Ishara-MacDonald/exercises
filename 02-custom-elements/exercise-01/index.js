@@ -1,54 +1,29 @@
 const template = document.createElement('template')
-template.innerHTML = `<div class="light-bulb"></div><button class="switch">Turn on/off</button>`
+template.innerHTML = `<div class="light-switch"></div> <button class="switch">Turn on/off</button>`
 
-class LightBulb extends HTMLElement {
-  _switchState = false;
+class LightSwitch extends HTMLElement{
+  _lightOn = false;
 
-  connectedCallback() {
-    this.appendChild(template.content.cloneNode(true))
-	
-    this.querySelector('.switch').addEventListener('click', () => {
-      this._switchState = !this._switchState;
-      this.switchLight(this._switchState);
+  constructor(){ super(); }
+
+  connectedCallback(){
+    this.appendChild(template.content.cloneNode(true));
+
+    this._lightOn = false;
+
+    this.querySelector('button').addEventListener('click', () =>{
+      this._lightOn = !this._lightOn;
+      this.switchPressed();
     });
   }
 
-  switchLight(state) {
-    const lightBulb = this.querySelector('.light-bulb');
+  switchPressed(){
+    const lightBulb = this.querySelector('.light-switch');
 
-    if (state) { lightBulb.classList.add('light-bulb--on'); }
-    else { lightBulb.classList.remove('light-bulb--on'); }
+    if(this._lightOn){ lightBulb.classList.add('light-switch--on')}
+    else{ lightBulb.classList.remove('light-switch--on') }
+
   }
 }
 
-customElements.define('light-bulb', LightBulb);
-
-// const template = document.createElement('template')
-// template.innerHTML = `<div class="light-switch"></div>
-// <button class="switch">Turn on/off</button>`
-
-// class LightBulb extends HTMLElement{
-//     _switchState = false;
-//     constructor(){
-//         super();
-//     }
-
-//     connectedCallback(){
-//         this.appendChild(template.content.cloneNode(true))
-
-//         this.querySelector('.switch').addEventListener('click', ()=>{
-//             this._switchState = !this._switchState;
-//             this.switchLight(this._switchState);
-//         });
-//     }
-
-//     switchLight(state){
-//         const lightBulb = this.querySelector('.light-switch');
-
-//         if(state){ lightBulb.classList.add('.light-switch--on'); }
-//         else{ lightBulb.classList.remove('.light-switch--on'); }
-//     }
-// }
-
-
-// customElements.define('light-switch', LightBulb);
+window.customElements.define('light-switch', LightSwitch);

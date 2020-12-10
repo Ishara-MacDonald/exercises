@@ -10,7 +10,6 @@ class ToDoList extends HTMLElement {
         <h1>To do</h1>
         <input type="text" placeholder="Add a new to do"></input>
         <button>Voeg toe</button>
-
         <ul id="todos"></ul>
         `;
 
@@ -29,7 +28,11 @@ class ToDoList extends HTMLElement {
     }
 
     _toggleTodo(event) {
+        const todo = this._todos[event.detail];
 
+        todo.checked = !todo.checked;
+
+        this._renderTodoList();
     }
 
     _renderTodoList() {
@@ -45,6 +48,7 @@ class ToDoList extends HTMLElement {
             // By setting index we have some state to keep track of the index
             // of the to do
             $todoItem.setAttribute('index', index);
+            $todoItem.addEventListener('onToggle', this._toggleTodo.bind(this));
             this.querySelector('#todos').appendChild($todoItem);
         });
     }

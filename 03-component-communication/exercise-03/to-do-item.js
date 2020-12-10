@@ -10,8 +10,34 @@ class TodoItem extends HTMLElement {
         super();
     }
 
+    static get observedAttributes(){
+        return ['checked', 'index', 'text']
+    }
+
+    attributeChangedCallback(name, oldValue, newValue){
+        switch(name){
+            case'checked':
+                this._checked = this.hasAttribute('checked');
+                break;
+            case'index':
+                this._index = parseInt(newValue);
+                break;
+            case'text':
+                this._text = newValue;
+                break;
+        }
+
+    }
+
     connectedCallback() {
         this.appendChild(template.content.cloneNode(true))
+
+        this.querySelector('.item').addEventListener('click', (e) => {
+            this.dispatchEvent(
+            new CustomEvent('onToggle', {
+                detail : this.getAttribute('index') 
+            }));
+        });
 
         this._renderTodoItem();
     }
