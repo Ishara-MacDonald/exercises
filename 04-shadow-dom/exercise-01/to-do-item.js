@@ -33,7 +33,7 @@ class TodoItem extends HTMLElement {
         this.$checkbox = this._shadowRoot.querySelector('input');
 
         this.$checkbox.addEventListener('click', (e) =>{
-            this.dispatchEvent(new CustomEvent('OnToggle',{ detail : this.index }));
+            this.dispatchEvent(new CustomEvent('onToggle',{ detail : this.index }));
         });
     }
 
