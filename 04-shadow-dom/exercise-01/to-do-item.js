@@ -1,9 +1,23 @@
 const template = document.createElement('template')
 template.innerHTML = `
+    <style>
+        :host {
+            display: block;
+            font-family: sans-serif;
+        }
+        .completed {
+            text-decoration: line-through;
+        }
+        button {
+            border: none;
+            cursor: pointer;
+        }
+    </style>
     <li class="item">
         <input type="checkbox">
         <label></label>
-    </li>`
+    </li>
+`;
 
 class TodoItem extends HTMLElement {
     __shadowRoot = null;
@@ -11,8 +25,16 @@ class TodoItem extends HTMLElement {
     constructor() {
         super();
 
-        this.__shadowRoot = this.attachShadow({mode:'open'});
-        this.__shadowRoot.appendChild(template.content.cloneNode(true));
+        this._shadowRoot = this.attachShadow({mode:'open'});
+        this._shadowRoot.appendChild(template.content.cloneNode(true));
+
+        this.$item = this._shadowRoot.querySelector('.item');
+        this.$text = this._shadowRoot.querySelector('label');
+        this.$checkbox = this._shadowRoot.querySelector('input');
+
+        this.$checkbox.addEventListener('click', (e) =>{
+            this.dispatchEvent(new CustomEvent('OnToggle',{ detail : this.index }));
+        });
     }
 
     static get observedAttributes(){
@@ -20,12 +42,9 @@ class TodoItem extends HTMLElement {
     }
 
     connectedCallback() {
-        this.__shadowRoot.querySelector('.item').addEventListener('click', (e) => {
-            this.dispatchEvent(
-            new CustomEvent('onToggle', {
-                detail : this.getAttribute('index') 
-            }));
-        });
+        if(!this.hasAttribute('text')){
+            this.setAttribute('text', 'placeholder');
+        }
 
         this._renderTodoItem();
     }
@@ -47,16 +66,18 @@ class TodoItem extends HTMLElement {
 
     _renderTodoItem() {
         if (this.hasAttribute('checked')) {
-            this.querySelector('.item').classList.add('completed');
+            this.$item.classList.add('completed');
+            this.$checkbox.setAttribute('checked', '');
         } else {
-            this.querySelector('.item').classList.remove('completed');
+            this.$item.classList.remove('completed');
+            this.$checkbox.removeAttribute('checked');
         }
 
-        this.__shadowRoot.querySelector('label').innerHTML = this._text;
+        this.$text.innerHTML = this._text;
     }
 
     set index(value) {
-        this._index = value;
+        this.setAttribute('index', value);
     }
 
     get index() {

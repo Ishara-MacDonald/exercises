@@ -45,26 +45,31 @@ class ToDoList extends HTMLElement {
         this._shadowRoot = this.attachShadow({ 'mode': 'open' });
         this._shadowRoot.appendChild(template.content.cloneNode(true));
 
-        this.$todoList = this.__shadowRoot.querySelector('ul');
-        this.$input = this.__shadowRoot.querySelector('input');
+        this.$todoList = this._shadowRoot.querySelector('ul');
+        this.$input = this._shadowRoot.querySelector('input');
 
-        this.$submitButton = this.__shadowRoot.querySelector('button');
+        this.$submitButton = this._shadowRoot.querySelector('button');
         this.$submitButton.addEventListener('click', this._addTodo.bind(this))
     }
 
-    _addTodo() {
-        if(this.querySelector('input').value.length > 0){
+    _addTodo(event) {
+        event.preventDefault();
+
+        if(this.$input.value.length > 0){
             this._todos.push({
-                text: this.querySelector('input').value, 
-                checked: false 
+                text: this.$input.value, 
+                checked: false
             })
             this._renderTodoList();
-            this.querySelector('input').value = '';
+            this.$input.value = '';
         }
     }
 
     _toggleTodo(event) {
         const todo = this._todos[event.detail];
+        // this._todos[event.detail] = Object.assign({}, todo, {
+        //     checked: !todo.checked
+        // });
 
         todo.checked = !todo.checked;
 
@@ -72,20 +77,19 @@ class ToDoList extends HTMLElement {
     }
 
     _renderTodoList() {
-        this.querySelector('#todos').innerHTML = '';
+        this.$todoList.innerHTML = '';
 
         this._todos.forEach((todo, index) => {
             let $todoItem = document.createElement('to-do-item');
             $todoItem.setAttribute('text', todo.text);
-            // if the to do is checked, set the attribute, else; omit it.
+            
             if (todo.checked) {
                 $todoItem.setAttribute('checked', '');                
             }
-            // By setting index we have some state to keep track of the index
-            // of the to do
+            
             $todoItem.setAttribute('index', index);
             $todoItem.addEventListener('onToggle', this._toggleTodo.bind(this));
-            this.querySelector('#todos').appendChild($todoItem);
+            this.$todoList.appendChild($todoItem);
         });
     }
 

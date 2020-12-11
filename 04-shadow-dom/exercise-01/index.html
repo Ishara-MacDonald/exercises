@@ -3,61 +3,29 @@
 <html>
 
 <head>
-  <title>Web Components</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Web Components</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-
-<style>
-  to-do-list {
-    display: block;
-    font-family: sans-serif;
-    text-align: center;
-  }
-
-  to-do-list button {
-    border: none;
-    cursor: pointer;
-  }
-
-  to-do-list ul {
-    list-style: none;
-    padding: 0;
-  }
-
-  to-do-item {
-    display: block;
-    font-family: sans-serif;
-  }
-
-  to-do-item .completed {
-    text-decoration: line-through;
-  }
-
-  to-do-item button {
-    border: none;
-    cursor: pointer;
-  }
-</style>
 
 <body>
 
-  <main>
+    <main>
 
-    <to-do-list></to-do-list>
+        <to-do-list></to-do-list>
 
-  </main>
+    </main>
 
-  <script>
-    const app = document.querySelector('to-do-list');
-    import('./to-do-list.js').then(() => {
-      app.todos = [
-        { text: 'Read a book', checked: true },
-        { text: 'Finish assignments', checked: false },
-        { text: 'Walk the dog', checked: false },
-        { text: 'Make lunch', checked: false },
-      ];
-    });
-  </script>
+    <script>
+        const list = document.querySelector('to-do-list');
+        import('./to-do-list.js').then(() => {
+            list.todos = [
+                { text: 'Read a book', checked: true },
+                { text: 'Finish assignments', checked: false },
+                { text: 'Walk the dog', checked: false },
+                { text: 'Make lunch', checked: false },
+            ];
+        });
+    </script>
 </body>
 
 </html>
